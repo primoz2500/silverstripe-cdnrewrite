@@ -1,5 +1,5 @@
 {
- "name": "dorsetdigital/silverstripe-cdnrewrite",
+ "name": "primoz2500/silverstripe-cdnrewrite",
  "description": "Automatically rewrites the URLs of media and assets to use a CDN",
  "type": "silverstripe-vendormodule",
  "homepage": "https://github.com/DorsetDigital/silverstripe-cdnrewrite",
@@ -8,6 +8,10 @@
   {
    "name": "Tim Burt",
    "email": "tim@dorset-digital.net"
+  },
+  {
+   "name": "Primoz Skerbis",
+   "email": "primoz2500@gmail.com"
   }
  ], 
  "require": {
