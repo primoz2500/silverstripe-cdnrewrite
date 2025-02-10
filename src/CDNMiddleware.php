@@ -147,7 +147,9 @@ class CDNMiddleware implements HTTPMiddleware
                 $cdn . '/' . $subDir . $cleanPrefix . '/'
             ];
 
-            $body = str_replace($search, $replace, $body);
+            if($body != null) {
+                $body = str_replace($search, $replace, $body);
+            }
         }
     }
 
