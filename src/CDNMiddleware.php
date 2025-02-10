@@ -158,7 +158,9 @@ class CDNMiddleware implements HTTPMiddleware
     {
         if ($this->config()->get('add_prefetch') === true) {
             $prefetchTag = $this->getPrefetchTag();
-            $body = str_replace('<head>', "<head>" . $prefetchTag, $body);
+            if($body != null) {
+                $body = str_replace('<head>', "<head>" . $prefetchTag, $body);
+            }
             if ($this->config()->get('add_debug_headers') == true) {
                 $response->addHeader('X-CDN-Prefetch', 'Enabled');
             }
