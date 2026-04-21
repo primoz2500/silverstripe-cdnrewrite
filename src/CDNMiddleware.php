@@ -110,7 +110,7 @@ class CDNMiddleware implements HTTPMiddleware
       if (($this->canRun() === true) && ($url !== null)) {
 
         if ($this->config()->get('cdn_rewrite') === true) {
-          return str_replace(Director::absoluteURL(""),$this->config()->get('cdn_domain'), $url);
+          return str_replace(Director::absoluteURL(""),$this->config()->get('cdn_domain').'/', $url);
         }
       }
 
