@@ -105,6 +105,18 @@ class CDNMiddleware implements HTTPMiddleware
         return $response;
     }
 
+    public function replaceUrl(string $url = null)
+    {
+      if (($this->canRun() === true) && ($url !== null)) {
+
+        if ($this->config()->get('cdn_rewrite') === true) {
+          return str_replace(Director::absoluteURL(""),$this->config()->get('cdn_domain'), $url);
+        }
+      }
+
+      return $url;
+    }
+
     /**
      * Check if we're OK to execute
      * @return bool
