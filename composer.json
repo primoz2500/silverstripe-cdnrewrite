@@ -13,10 +13,10 @@
    "name": "Primoz Skerbis",
    "email": "primoz2500@gmail.com"
   }
- ], 
+ ],
  "require": {
   "silverstripe/vendor-plugin": "^1 || ^2",
-  "silverstripe/cms": "^4.0 || ^5.0"
+  "silverstripe/cms": "^4.0 || ^5.0 || ^6.0"
  },
  "license": "BSD-3-Clause",
  "autoload": {
