@@ -15,7 +15,7 @@
   }
  ],
  "require": {
-  "silverstripe/vendor-plugin": "^1 || ^2",
+  "silverstripe/vendor-plugin": "^1 || ^2 || ^3",
   "silverstripe/cms": "^4.0 || ^5.0 || ^6.0"
  },
  "license": "BSD-3-Clause",
