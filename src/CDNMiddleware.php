@@ -87,12 +87,12 @@ class CDNMiddleware implements HTTPMiddleware
 
             if ($this->getIsAdmin($request) === false) {
                 $body = $response->getBody();
-                $this->rewriteTags($body, $response);
+                $this->rewriteTags($body);
                 $this->addPrefetch($body, $response);
                 $response->setBody($body);
             }
 
-            if ($this->config()->get('add_debug_headers') == true) {
+            if ($this->config()->get('add_debug_headers') === true) {
                 $response->addHeader('X-CDN-Domain', $this->config()->get('cdn_domain'));
                 $response->addHeader('X-CDN-Dir', $this->getSubdirectory());
             }
@@ -107,14 +107,13 @@ class CDNMiddleware implements HTTPMiddleware
 
     public function replaceUrl(string $url = null)
     {
-      if (($this->canRun() === true) && ($url !== null)) {
-
-        if ($this->config()->get('cdn_rewrite') === true) {
-          return str_replace(Director::absoluteURL(""),$this->config()->get('cdn_domain').'/', $url);
+        if (($this->canRun() === true) && ($url !== null)) {
+            if ($this->config()->get('cdn_rewrite') === true) {
+                return str_replace(Director::absoluteURL(""), $this->config()->get('cdn_domain') . '/', $url);
+            }
         }
-      }
 
-      return $url;
+        return $url;
     }
 
     /**
@@ -132,13 +131,17 @@ class CDNMiddleware implements HTTPMiddleware
     /**
      * Rewrite all the tags we need
      * @param $body
-     * @param $response
      */
-    private function rewriteTags(&$body, &$response)
+    private function rewriteTags(&$body)
     {
+        if ($body === null) {
+            return;
+        }
+
         $cdn = $this->config()->get('cdn_domain');
         $subDir = $this->getSubdirectory();
         $prefixes = $this->config()->get('rewrites');
+        $absoluteBaseUrl = Director::absoluteBaseURL();
 
         foreach ($prefixes as $prefix) {
             $cleanPrefix = trim($prefix, '/');
@@ -148,7 +151,7 @@ class CDNMiddleware implements HTTPMiddleware
                 'src="/' . $subDir . $cleanPrefix . '/',
                 'src=\"/' . $subDir . $cleanPrefix . '/',
                 'href="/' . $subDir . $cleanPrefix . '/',
-                Director::absoluteBaseURL() . $cleanPrefix . '/'
+                $absoluteBaseUrl . $cleanPrefix . '/'
             ];
 
             $replace = [
@@ -159,9 +162,7 @@ class CDNMiddleware implements HTTPMiddleware
                 $cdn . '/' . $subDir . $cleanPrefix . '/'
             ];
 
-            if($body != null) {
-                $body = str_replace($search, $replace, $body);
-            }
+            $body = str_replace($search, $replace, $body);
         }
     }
 
@@ -170,10 +171,10 @@ class CDNMiddleware implements HTTPMiddleware
     {
         if ($this->config()->get('add_prefetch') === true) {
             $prefetchTag = $this->getPrefetchTag();
-            if($body != null) {
+            if ($body !== null) {
                 $body = str_replace('<head>', "<head>" . $prefetchTag, $body);
             }
-            if ($this->config()->get('add_debug_headers') == true) {
+            if ($this->config()->get('add_debug_headers') === true) {
                 $response->addHeader('X-CDN-Prefetch', 'Enabled');
             }
         }
@@ -210,9 +211,6 @@ class CDNMiddleware implements HTTPMiddleware
     {
         $adminPath = AdminRootController::admin_url();
         $currentPath = rtrim($request->getURL(), '/') . '/';
-        if (substr($currentPath, 0, strlen($adminPath)) === $adminPath) {
-            return true;
-        }
-        return false;
+        return substr($currentPath, 0, strlen($adminPath)) === $adminPath;
     }
 }
